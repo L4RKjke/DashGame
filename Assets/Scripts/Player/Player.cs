@@ -6,7 +6,6 @@ using System;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private Transform _camera;
-    [SerializeField] private Animator _animator;
     [SerializeField] private float _dashDistance;
 
     private float _speed = 6;
@@ -17,6 +16,8 @@ public class Player : NetworkBehaviour
 
     public Action<HealthStatus> HealthChanged;
     public Action Dashed;
+    public Action<float> SpeedChanged;
+    public Action<bool> IsDashStarted;
 
     public HealthStatus State { get; private set; }
 
@@ -47,16 +48,11 @@ public class Player : NetworkBehaviour
     {
         if (_isDashing == false)
         {
-            DashAnimator();
             _isDashing = true;
+            IsDashStarted.Invoke(_isDashing);
             var target = transform.position + (transform.forward * _dashDistance);
             _dashCoroutine = StartCoroutine(DashRoutine(target));
         }
-    }
-
-    private void DashAnimator()
-    {
-        _animator.SetBool("Dash", true);
     }
 
     public void RotateView(Vector2 rotation, float sensetivity)
@@ -77,7 +73,8 @@ public class Player : NetworkBehaviour
             direction = direction.normalized;
             Vector3 velocity = direction * _speed;
             transform.Translate(velocity * Time.deltaTime);
-            _animator.SetFloat("Speed", Vector3.ClampMagnitude(direction, 1).magnitude * _speed);
+            var speed = Vector3.ClampMagnitude(direction, 1).magnitude * _speed;
+            SpeedChanged?.Invoke(Vector3.ClampMagnitude(direction, 1).magnitude * _speed);
         }
     }
 
@@ -93,17 +90,12 @@ public class Player : NetworkBehaviour
             else
             {
                 _isDashing = false;
-                StopDashing();
+                IsDashStarted.Invoke(_isDashing);
                 yield break;
             }
 
             yield return new WaitForFixedUpdate();
         }
-    }
-
-    private void StopDashing()
-    {
-        _animator.SetBool("Dash", false);
     }
 
     private void UpdatePosition(Vector3 position)
