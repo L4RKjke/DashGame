@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using Mirror;
 
-public class GameEnder : NetworkBehaviour
+public class FinalMessager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
 

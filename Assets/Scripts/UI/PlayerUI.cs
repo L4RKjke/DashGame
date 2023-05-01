@@ -9,7 +9,14 @@ public class PlayerUI : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI _playerScore;
     [SerializeField] private TextMeshProUGUI _playerName;
 
-    public RectTransform RectTransform => GetComponent<RectTransform>();
+    private RectTransform _rectTransform;
+
+    public RectTransform RectTransform => _rectTransform;
+
+    public void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
 
     public void SetScore(int score)
     {

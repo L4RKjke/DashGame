@@ -1,10 +1,9 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 
 public class GameRestarter : NetworkBehaviour
 {
-    private readonly string _loadMethodName = "LoadCurrentScene";
+    private readonly string _loadMethodName = nameof(LoadCurrentScene);
     private readonly int _loadTimeout = 5;
 
     public void RestartGame()

@@ -7,14 +7,16 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private Transform _camera;
     [SerializeField] private float _dashDistance;
-    [SerializeField] private CapsuleCollider _collider;
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private float _timeOfInvulnerability;
 
     private float _speed = 10;
     private bool _isDashing = false;
+    private bool _canDash = true;
     private float _dashSpeed = 50;
     private Coroutine _dashCoroutine;
-    private float _timeOfInvulnerability = 3;
+
+    private readonly int _dashReloadTime = 1;
+    private readonly int _maxAngle = 360;
 
     public Action<HealthStatus> HealthChanged;
     public Action Dashed;
@@ -48,21 +50,23 @@ public class Player : NetworkBehaviour
 
     public void DashActivate()
     {
-        if (_isDashing == false)
-        {
-            _isDashing = true;
-            IsDashStarted.Invoke(_isDashing);
-            var target = transform.position + (transform.forward * _dashDistance);
-            _dashCoroutine = StartCoroutine(DashRoutine(target));
-        }
+        if (_isDashing == true) return;
+
+        if (_canDash == false) return;
+
+        StartCoroutine(DiactivateDashingRoutine());
+        _isDashing = true;
+        IsDashStarted.Invoke(_isDashing);
+        var target = transform.position + (transform.forward * _dashDistance);
+        _dashCoroutine = StartCoroutine(DashRoutine(target));
     }
 
     public void RotateView(Vector2 rotation, float sensetivity)
     {
         var X = rotation.x * sensetivity * Time.deltaTime;
         var Y = rotation.y * (sensetivity) * Time.deltaTime;
-        var eulerX = (transform.rotation.eulerAngles.x + Y) % 360;
-        var eulerY = (transform.rotation.eulerAngles.y + X) % 360;
+        var eulerX = (transform.rotation.eulerAngles.x + Y) % _maxAngle;
+        var eulerY = (transform.rotation.eulerAngles.y + X) % _maxAngle;
 
         transform.localRotation = Quaternion.Euler(transform.localRotation.x, eulerY, 0);
         _camera.Rotate(new Vector3(eulerX, 0, 0));
@@ -114,6 +118,15 @@ public class Player : NetworkBehaviour
 
         State = HealthStatus.Cured;
         HealthChanged?.Invoke(State);
+    }
+
+    private IEnumerator DiactivateDashingRoutine()
+    {
+        _canDash = false;
+
+        yield return new WaitForSeconds(_dashReloadTime);
+
+        _canDash = true;
     }
 }
 

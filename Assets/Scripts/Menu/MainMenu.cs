@@ -10,14 +10,14 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        _host.onClick.AddListener(() => OnHostButtonClick());
-        _join.onClick.AddListener(() => OnJoinButtonClick());
+        _host.onClick.AddListener(OnHostButtonClick);
+        _join.onClick.AddListener(OnJoinButtonClick);
     }
 
     private void OnDisable()
     {
-        _host.onClick.RemoveListener(() => OnHostButtonClick());
-        _join.onClick.RemoveListener(() => OnJoinButtonClick());
+        _host.onClick.RemoveListener(OnHostButtonClick);
+        _join.onClick.RemoveListener(OnJoinButtonClick);
     }
 
     private void OnHostButtonClick()

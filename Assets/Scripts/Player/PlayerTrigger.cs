@@ -9,14 +9,14 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.TryGetComponent(out Player player))
         {
-            if (_player.IsDashing)
-            {
-                if (player.State == HealthStatus.Cured && player.IsDashing == false)
-                {
-                    player.ApplyDamage();
-                    _player.Dashed?.Invoke();
-                }
-            }
+            if (_player.IsDashing) return;
+
+            if (player.State != HealthStatus.Cured) return;
+
+            if (player.IsDashing == true) return;
+ 
+            player.ApplyDamage();
+            _player.Dashed?.Invoke();
         }
     }
 }

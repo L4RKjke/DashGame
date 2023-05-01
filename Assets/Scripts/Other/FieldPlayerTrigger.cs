@@ -23,7 +23,6 @@ public class FieldPlayerTrigger : NetworkBehaviour
         if (other.TryGetComponent(out PlayerInfo player))
         {
             Remove(player);
-            _units.Clear();
         }    
     }
 

@@ -8,11 +8,7 @@ public class BattleUI : NetworkBehaviour
     [SerializeField] private PlayerUI _playerUITemplete;
     [SerializeField] private Transform _content;
     [SerializeField] private GameRestarter _gameRestarter;
-    [SerializeField] private GameEnder _gameEnder;
-
-    [SyncVar(hook = nameof(OnScoreChanged))]
-
-    private int score;
+    [SerializeField] private FinalMessager _gameEnder;
 
     private List<PlayerUI> _playerUiList = new List<PlayerUI>();
 
@@ -28,10 +24,10 @@ public class BattleUI : NetworkBehaviour
 
     private void Update()
     {
-        OnScoreChanged(0, 0);
+        OnScoreChanged();
     }
 
-    private void OnScoreChanged(int oldScore, int newScore)
+    private void OnScoreChanged()
     {
         SetScore();
 
@@ -59,12 +55,14 @@ public class BattleUI : NetworkBehaviour
     {
         for (int i = 0; i < _trigger.Lenght(); i++)
         {
-            _playerUiList[i].SetScore(_trigger.GetPlayer(i).Score);
-            _playerUiList[i].SetName(_trigger.GetPlayer(i).Name); ;
+            var getPlayer = _trigger.GetPlayer(i);
 
-            if (_trigger.GetPlayer(i).Score == 3)
+            _playerUiList[i].SetScore(getPlayer.Score);
+            _playerUiList[i].SetName(getPlayer.Name); ;
+
+            if (getPlayer.Score == 3)
             {
-                _gameEnder.ShowMessage(_trigger.GetPlayer(i).Name);
+                _gameEnder.ShowMessage(getPlayer.Name);
                 _gameRestarter.RestartGame();
             }
         }
@@ -72,8 +70,7 @@ public class BattleUI : NetworkBehaviour
 
     private void CreatePlayerUI()
     {
-        var newPlayerUI = Instantiate(_playerUITemplete);
-        newPlayerUI.gameObject.transform.SetParent(_content);
+        var newPlayerUI = Instantiate(_playerUITemplete, _content);
         newPlayerUI.RectTransform.localScale = new Vector3(1, 1, 1);
         _playerUiList.Add(newPlayerUI);
     }

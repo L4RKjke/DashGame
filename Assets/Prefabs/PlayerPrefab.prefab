@@ -200,6 +200,7 @@ MonoBehaviour:
   _dashDistance: 11
   _collider: {fileID: 3484835799196754239}
   _rigidbody: {fileID: 7659333086883880624}
+  _timeOfInvulnerability: 3
 --- !u!114 &6041510662605577487
 MonoBehaviour:
   m_ObjectHideFlags: 0
