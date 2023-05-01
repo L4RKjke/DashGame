@@ -9,7 +9,7 @@ public class PlayerTrigger : MonoBehaviour
     {
         if (other.TryGetComponent(out Player player))
         {
-            if (_player.IsDashing) return;
+            if (_player.IsDashing == false) return;
 
             if (player.State != HealthStatus.Cured) return;
 
