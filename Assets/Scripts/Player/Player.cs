@@ -7,8 +7,10 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private Transform _camera;
     [SerializeField] private float _dashDistance;
+    [SerializeField] private CapsuleCollider _collider;
+    [SerializeField] private Rigidbody _rigidbody;
 
-    private float _speed = 6;
+    private float _speed = 10;
     private bool _isDashing = false;
     private float _dashSpeed = 50;
     private Coroutine _dashCoroutine;
