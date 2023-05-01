@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using Mirror;
 
@@ -8,10 +7,12 @@ public class ColorChanger : NetworkBehaviour
     [SerializeField] private Player _player;
 
     private Color _originalColor;
+    private Material _material;
 
     private void Start()
     {
-        _originalColor = _renderer.materials[1].color;
+        _material = _renderer.materials[1];
+        _originalColor = _material.color;
     }
 
     private void OnEnable()
@@ -29,17 +30,11 @@ public class ColorChanger : NetworkBehaviour
         if (status == HealthStatus.Damaged)
             SetColor(Color.red);
         else
-            RestoreColor();
+            SetColor(_originalColor);
     }
 
     private void SetColor(Color color)
     {
-        _renderer.materials[1].color = color;
+        _material.color = color;
     }
-
-    private void RestoreColor()
-    {
-        _renderer.materials[1].color = _originalColor;
-    }
-
 }

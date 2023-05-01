@@ -129,9 +129,3 @@ public class Player : NetworkBehaviour
         _canDash = true;
     }
 }
-
-public enum HealthStatus
-{
-    Damaged,
-    Cured
-}
