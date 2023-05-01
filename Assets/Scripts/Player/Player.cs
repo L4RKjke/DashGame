@@ -21,7 +21,7 @@ public class Player : NetworkBehaviour
     public Action<HealthStatus> HealthChanged;
     public Action Dashed;
     public Action<float> SpeedChanged;
-    public Action<bool> IsDashStarted;
+    public Action<bool> DashStateChanged;
 
     public HealthStatus State { get; private set; }
 
@@ -56,7 +56,7 @@ public class Player : NetworkBehaviour
 
         StartCoroutine(DiactivateDashingRoutine());
         _isDashing = true;
-        IsDashStarted.Invoke(_isDashing);
+        DashStateChanged.Invoke(_isDashing);
         var target = transform.position + (transform.forward * _dashDistance);
         _dashCoroutine = StartCoroutine(DashRoutine(target));
     }
@@ -96,7 +96,7 @@ public class Player : NetworkBehaviour
             else
             {
                 _isDashing = false;
-                IsDashStarted.Invoke(_isDashing);
+                DashStateChanged.Invoke(_isDashing);
                 yield break;
             }
 

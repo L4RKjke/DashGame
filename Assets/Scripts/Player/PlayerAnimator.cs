@@ -12,13 +12,13 @@ public class PlayerAnimator : NetworkBehaviour
     private void OnEnable()
     {
         _player.SpeedChanged += OnMove;
-        _player.IsDashStarted += OnDashStateChanged;
+        _player.DashStateChanged += OnDashStateChanged;
     }
 
     private void OnDisable()
     {
         _player.SpeedChanged -= OnMove;
-        _player.IsDashStarted -= OnDashStateChanged;
+        _player.DashStateChanged -= OnDashStateChanged;
     }
 
     private void OnMove(float speed)
