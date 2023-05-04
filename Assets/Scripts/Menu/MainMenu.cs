@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button _join;
     [SerializeField] private NetworkManager _networkManager;
 
+    private void Start()
     private void OnEnable()
     {
         _host.onClick.AddListener(OnHostButtonClick);
