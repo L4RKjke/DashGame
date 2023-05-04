@@ -20,12 +20,13 @@ public class CustomNetworkManager : NetworkManager
     {
         GameObject player = Instantiate(playerPrefab, GetRandomSpawnPoint(_spawned).position, Quaternion.identity);
 
+        _spawned++;
+
         if (player.TryGetComponent(out PlayerInfo Info))
         {
-            Info.SetName("player: " + _spawned);
+            Info.SetName("player" + _spawned + ":");
         }
 
-        _spawned++;
         NetworkServer.AddPlayerForConnection(conn, player);
     }
 

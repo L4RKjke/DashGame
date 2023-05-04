@@ -5,20 +5,24 @@ public class PlayerAnimator : NetworkBehaviour
 {
     [SerializeField] private Player _player;
     [SerializeField] private Animator _animator;
+    [SerializeField] private DashAbility _dashAbility;
+    [SerializeField] private AttackState _attackState;
 
     private readonly string _speed = "Speed";
     private readonly string _dash = "Dash";
 
     private void OnEnable()
     {
-        _player.SpeedChanged += OnMove;
-        _player.DashStateChanged += OnDashStateChanged;
+        _player.PlayerMover.SpeedChanged += OnMove;
+        _attackState.AttackEnded += OnDashStateChanged;
+        _dashAbility.DashStateChanged += OnDashStateChanged;
     }
 
     private void OnDisable()
     {
-        _player.SpeedChanged -= OnMove;
-        _player.DashStateChanged -= OnDashStateChanged;
+        _player.PlayerMover.SpeedChanged -= OnMove;
+        _attackState.AttackEnded -= OnDashStateChanged;
+        _dashAbility.DashStateChanged -= OnDashStateChanged;
     }
 
     private void OnMove(float speed)

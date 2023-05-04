@@ -1,9 +1,11 @@
 using UnityEngine;
 using Mirror;
+using System;
 
 public class InputSystem : NetworkBehaviour
 {
     [SerializeField] private Player _mover;
+    [SerializeField] private CameraExtention _camera;
 
     private int _mouseSensetivity = 220;
 
@@ -20,6 +22,10 @@ public class InputSystem : NetworkBehaviour
 
     public float VerticalMouseInput { get; private set; }
 
+    public Vector3 MoveDirection { get; private set; }
+    
+    public bool IsClicked { get; private set; }
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -27,13 +33,9 @@ public class InputSystem : NetworkBehaviour
 
     private void Update()
     {   
-        if (Input.GetKeyUp(KeyCode.K))
-        {
-            if (isLocalPlayer)
-                CmdTest();
-        }
-
         if (!isLocalPlayer) return;
+
+        IsClicked = false;
 
         if (Input.GetKeyUp(KeyCode.Escape))
         {
@@ -42,24 +44,11 @@ public class InputSystem : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            OnLeftMouseDown();
+            IsClicked = true;
         }
 
         OnPlayerMove();
         OnMouseMove();
-    }
-
-    [ClientRpc]
-    private void RpcTest()
-    {
-        Debug.Log("K pressed from server to client");
-    }
-
-    [Command]
-    private void CmdTest()
-    {
-        Debug.Log("K pressed on server");
-        RpcTest();
     }
 
     private void OnPlayerMove()
@@ -67,13 +56,7 @@ public class InputSystem : NetworkBehaviour
         float horizontalInput = Input.GetAxis(_horizontal);
         float verticalInput = Input.GetAxis(_vertical);
         var direction = new Vector3(horizontalInput, 0f, verticalInput);
-
-        _mover.Move(direction);
-    }
-
-    public void OnLeftMouseDown()
-    {
-        _mover.DashActivate();
+        MoveDirection = direction;
     }
 
     public void OnMouseMove()
@@ -82,6 +65,7 @@ public class InputSystem : NetworkBehaviour
         var verticalKeyInput = -Input.GetAxis(_mouseVertical);
         var rotation = new Vector2(horizontalKeyInput, verticalKeyInput);
 
-        _mover.RotateView(rotation, _mouseSensetivity);
+        _mover.PlayerMover.RotateView(rotation, _mouseSensetivity);
+        _camera.RotateCamera(rotation, _mouseSensetivity);
     }
 }

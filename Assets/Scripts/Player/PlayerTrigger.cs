@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerTrigger : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+/*    [SerializeField] private Player _player;
     [SerializeField] private PlayerInfo _playerInfo;
 
     private void OnCollisionEnter(Collision collision)
@@ -19,5 +19,5 @@ public class PlayerTrigger : MonoBehaviour
                 _playerInfo.AddPoint();         
             }
         }
-    }
+    }*/
 }

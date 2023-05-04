@@ -1,12 +1,12 @@
 using UnityEngine;
-using Mirror;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private Button _host;
     [SerializeField] private Button _join;
-    [SerializeField] private NetworkManager _networkManager;
+    [SerializeField] private CustomNetworkManager _networkManager;
+
     private void OnEnable()
     {
         _host.onClick.AddListener(OnHostButtonClick);
