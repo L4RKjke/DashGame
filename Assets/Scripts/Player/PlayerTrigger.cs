@@ -1,22 +1,23 @@
 using UnityEngine;
-using System;
 
 public class PlayerTrigger : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    [SerializeField] private PlayerInfo _playerInfo;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.TryGetComponent(out Player player))
+        if (collision.transform.TryGetComponent(out Player player))
         {
-            if (_player.IsDashing == false) return;
-
-            if (player.State != HealthStatus.Cured) return;
+            if (player.State == HealthStatus.Damaged) return;
 
             if (player.IsDashing == true) return;
- 
-            player.ApplyDamage();
-            _player.Dashed?.Invoke();
+
+            if (_player.IsDashing)
+            {
+                player.ApplyDamage();
+                _playerInfo.AddPoint();         
+            }
         }
     }
 }

@@ -20,41 +20,27 @@ public class PlayerInfo : NetworkBehaviour
     private void OnEnable()
     {
         _name = GenerateName();
-
-        if (isServer)
-            RpcSetName(_name);
-        else
-            CmdSetName(_name);
-
-        _player.Dashed += AddPoint;
     }
 
     private void OnDisable()
     {
-        _player.Dashed -= AddPoint;
         _score = 0;
     }
 
-    private void AddPoint()
+    public void AddPoint()
     {
+        Debug.Log("scoreUpdate " + _score);
+
         _score++;
 
-        if (isServer)
-            RpcUpdateScore(_score);
-        else
+        if (isLocalPlayer)
+        {
             CmdUpdateScore(_score);
-
-        ScoreUpdated?.Invoke(_score);
+            ScoreUpdated?.Invoke(_score);
+        }
     }
 
-    [Command]
-    private void CmdSetName(string name)
-    {
-        _name = name;
-    }
-
-    [ClientRpc]
-    private void RpcSetName(string name)
+    private void SetName(string name)
     {
         _name = name;
     }
@@ -63,12 +49,17 @@ public class PlayerInfo : NetworkBehaviour
     private void CmdUpdateScore(int newScore)
     {
         _score = newScore;
+        _textMeshProUGUI.text = _score.ToString();
+        ScoreUpdated?.Invoke(_score);
+        RpcUpdateScore(_score);
     }
 
     [ClientRpc]
     private void RpcUpdateScore(int newScore)
     {
         _score = newScore;
+        _textMeshProUGUI.text = _score.ToString();
+        ScoreUpdated?.Invoke(_score);
     }
 
     private string GenerateName()

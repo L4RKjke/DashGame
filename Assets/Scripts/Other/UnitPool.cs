@@ -3,12 +3,12 @@ using UnityEngine;
 using Mirror;
 using System;
 
-public class FieldPlayerTrigger : NetworkBehaviour
+public class UnitPool : MonoBehaviour
 {
     [SerializeField] private BattleUI _ui;
 
     private List<PlayerInfo> _units = new List<PlayerInfo>();
-    public Action PlayerAdded;
+    public Action<PlayerInfo> PlayerAdded;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,12 +23,12 @@ public class FieldPlayerTrigger : NetworkBehaviour
         if (other.TryGetComponent(out PlayerInfo player))
         {
             Remove(player);
-        }    
+        }
     }
 
     public void Add(PlayerInfo player)
     {
-        PlayerAdded?.Invoke();
+        PlayerAdded?.Invoke(player);
         _units.Add(player);
     }
 

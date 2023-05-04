@@ -26,7 +26,13 @@ public class InputSystem : NetworkBehaviour
     }
 
     private void Update()
-    {
+    {   
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            if (isLocalPlayer)
+                CmdTest();
+        }
+
         if (!isLocalPlayer) return;
 
         if (Input.GetKeyUp(KeyCode.Escape))
@@ -41,6 +47,19 @@ public class InputSystem : NetworkBehaviour
 
         OnPlayerMove();
         OnMouseMove();
+    }
+
+    [ClientRpc]
+    private void RpcTest()
+    {
+        Debug.Log("K pressed from server to client");
+    }
+
+    [Command]
+    private void CmdTest()
+    {
+        Debug.Log("K pressed on server");
+        RpcTest();
     }
 
     private void OnPlayerMove()
