@@ -11,6 +11,7 @@ public class DashAbility : Ability
     [SerializeField] private Player _player;
     [SerializeField] private PlayerInfo _playerInfo;
 
+    private bool _isWall = false;
     private bool _isDashing = false;
     private bool _canDash = true;
     private float _dashSpeed = 40;
@@ -30,12 +31,6 @@ public class DashAbility : Ability
         Status = AbilityStatus.Ended;
     }
 
-    private void OnDisable()
-    {
-        if (_dashCoroutine != null)
-            StopCoroutine(_dashCoroutine);
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.TryGetComponent(out Player player))
@@ -50,8 +45,25 @@ public class DashAbility : Ability
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Wall wall))
+            _isWall = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Wall wall))
+            _isWall = false;
+    }
+
     public override void ActivateAbiltity()
     {
+        if (_isWall)
+        {
+            DeactivateAbiltity();
+        }
+
         if (_isDashing == true) return;
 
         if (_canDash == false) return;
@@ -105,9 +117,14 @@ public class DashAbility : Ability
             StopCoroutine(_dashCoroutine);
 
         _rigidbody.velocity = Vector3.zero;
+
         _isDashing = false;
 
+        if (isLocalPlayer)
+            CmdChangeDashState(false);
+
         Status = AbilityStatus.Ended;
+        DashStateChanged.Invoke(_isDashing);
     }
 
     [Command]

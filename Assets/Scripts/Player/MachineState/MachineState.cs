@@ -12,7 +12,6 @@ public class MachineState : NetworkBehaviour
 
     private void Start()
     {
-        Debug.Log("reset");
         Reset(_startState);
     }
 
@@ -43,7 +42,5 @@ public class MachineState : NetworkBehaviour
     {
         _currentState = startState;
         _currentState.Enter(_player);
-        Debug.Log("reseted");
     }
-
 }

@@ -6,8 +6,6 @@ public class IdleState : State
 {
     private void OnEnable()
     {
-        Debug.Log("eldeState activated");
-
         if (Player != null)
             Player.PlayerMover.Move(Vector3.zero);
     }
