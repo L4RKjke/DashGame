@@ -41,9 +41,9 @@ public class PlayerUI : NetworkBehaviour
         }
     }
 
-    public void SetName(string name)
+    public void SetName(string newValue)
     {
-        _playerName.text = name;
+        _playerName.text = newValue;
     }
 
     [Command]

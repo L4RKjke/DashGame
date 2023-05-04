@@ -9,18 +9,19 @@ public class GameRestarter : NetworkBehaviour
 
     private readonly string _loadMethodName = nameof(LoadCurrentScene);
     private readonly int _loadTimeout = 5;
+    private readonly int _winScore = 3;
 
-    private void Update()
+    private string _name;
+
+    private void OnEnable()
     {
-        Debug.Log("Count: " + _unitPool.Lenght());
-
-        for (int i = 0; i < _unitPool.Lenght(); i++)
-        {
-            _unitPool.GetPlayer(i).ScoreUpdated += WaitForWinner;
-        }
+        _unitPool.PlayerAdded += OnPlayerAdded;
     }
 
-
+    private void OnDisable()
+    {
+        _unitPool.PlayerAdded -= OnPlayerAdded;
+    }
 
     public void RestartGame()
     {
@@ -34,8 +35,18 @@ public class GameRestarter : NetworkBehaviour
         NetworkManager.singleton.ServerChangeScene(SceneManager.GetActiveScene().name);
     }
 
+    private void OnPlayerAdded(PlayerInfo info)
+    {
+        info.ScoreUpdated += WaitForWinner;
+        _name = info.Name;
+    }
+
     private void WaitForWinner(int score)
     {
-
+        if (score == _winScore)
+        {
+            RestartGame();
+            _finalMessager.ShowMessage(_name);
+        }
     }
 }

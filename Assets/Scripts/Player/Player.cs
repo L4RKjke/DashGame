@@ -40,7 +40,7 @@ public class Player : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.TryGetComponent<Wall>(out Wall _))
+        if (collision.transform.TryGetComponent<Wall>(out _))
         {
             _isCollision = true;
         }
@@ -48,7 +48,7 @@ public class Player : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.transform.TryGetComponent<Wall>(out Wall _))
+        if (collision.transform.TryGetComponent<Wall>(out _))
         {
             _isCollision = false;
         }

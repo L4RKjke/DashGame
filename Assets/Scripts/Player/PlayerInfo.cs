@@ -1,13 +1,12 @@
 using UnityEngine;
 using System;
 using Mirror;
-using TMPro;
 
 public class PlayerInfo : NetworkBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
 
+    [SyncVar(hook = nameof(OnNameUpdated))]
     private string _name;
     private int _score;
 
@@ -17,11 +16,6 @@ public class PlayerInfo : NetworkBehaviour
 
     public int Score => _score;
 
-    private void OnEnable()
-    {
-        _name = GenerateName();
-    }
-
     private void OnDisable()
     {
         _score = 0;
@@ -29,8 +23,6 @@ public class PlayerInfo : NetworkBehaviour
 
     public void AddPoint()
     {
-        Debug.Log("scoreUpdate " + _score);
-
         _score++;
 
         if (isLocalPlayer)
@@ -40,16 +32,20 @@ public class PlayerInfo : NetworkBehaviour
         }
     }
 
-    private void SetName(string name)
+    public void SetName(string name)
     {
         _name = name;
+    }
+
+    public void OnNameUpdated(string oldName,string newName)
+    {
+        _name = newName;
     }
 
     [Command]
     private void CmdUpdateScore(int newScore)
     {
         _score = newScore;
-        _textMeshProUGUI.text = _score.ToString();
         ScoreUpdated?.Invoke(_score);
         RpcUpdateScore(_score);
     }
@@ -58,7 +54,6 @@ public class PlayerInfo : NetworkBehaviour
     private void RpcUpdateScore(int newScore)
     {
         _score = newScore;
-        _textMeshProUGUI.text = _score.ToString();
         ScoreUpdated?.Invoke(_score);
     }
 
@@ -74,5 +69,20 @@ public class PlayerInfo : NetworkBehaviour
         }
 
         return new String(name);
+    }
+
+    [Command]
+    private void CmdUpdateName(string name)
+    {
+        Debug.Log("cmdUpdateName");
+        _name = name;
+        RpcUpdateName(name);
+    }
+
+    [ClientRpc]
+    private void RpcUpdateName(string name)
+    {
+        Debug.Log("RpcUpdateName");
+        _name = name;
     }
 }
