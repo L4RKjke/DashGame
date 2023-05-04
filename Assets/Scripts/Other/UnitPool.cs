@@ -23,7 +23,7 @@ public class UnitPool : MonoBehaviour
         if (other.TryGetComponent(out PlayerInfo player))
         {
             Remove(player);
-        }
+        }    
     }
 
     public void Add(PlayerInfo player)
