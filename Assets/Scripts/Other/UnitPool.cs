@@ -5,8 +5,6 @@ using System;
 
 public class UnitPool : MonoBehaviour
 {
-    [SerializeField] private BattleUI _ui;
-
     private List<PlayerInfo> _units = new List<PlayerInfo>();
     public Action<PlayerInfo> PlayerAdded;
 
