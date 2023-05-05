@@ -62,7 +62,7 @@ public class InputSystem : NetworkBehaviour
     public void OnMouseMove()
     {
         var horizontalKeyInput = Input.GetAxis(_mouseHorizontal);
-        var verticalKeyInput = -Input.GetAxis(_mouseVertical);
+        var verticalKeyInput = Input.GetAxis(_mouseVertical);
         var rotation = new Vector2(horizontalKeyInput, verticalKeyInput);
 
         _mover.PlayerMover.RotateView(rotation, _mouseSensetivity);
