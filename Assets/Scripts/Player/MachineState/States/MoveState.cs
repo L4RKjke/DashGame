@@ -6,7 +6,6 @@ public class MoveState : State
 
     private void Update()
     {
-        if (Player != null)
-            Player.PlayerMover.Move(_inputSystem.MoveDirection);
+        Player?.PlayerMover.Move(_inputSystem.MoveDirection);
     }
 }

@@ -90,10 +90,13 @@ public class DashAbility : Ability
         _rigidbody.velocity = transform.forward * _dashSpeed;
         DashStateChanged.Invoke(_isDashing);
         Status = AbilityStatus.InProgress;
+        float currentDistance = 0;
 
         while (true)
         {
-            if (Vector3.Distance(transform.position, target) < 2f)
+            currentDistance += _dashSpeed * Time.deltaTime;
+
+            if (currentDistance >= _dashDistance)
             {
                 _rigidbody.velocity = Vector3.zero;
 
