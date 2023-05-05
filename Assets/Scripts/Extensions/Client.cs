@@ -2,46 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
+using UnityEngine.SceneManagement;
+/// Extention for player
 [RequireComponent(typeof(NetworkMatch))]
 public class Client : NetworkBehaviour
 {
     public static Client LocalPlayer;
 
-    [SyncVar] public string MatchId;
+    [SyncVar] private string _matchId;
 
     private NetworkMatch _networkMatch;
 
+    private readonly string _gameSceneName = "OnlineGameScene";
+
     private void Start()
     {
+        _networkMatch = GetComponent<NetworkMatch>();
+
         if (isLocalPlayer)
         {
             LocalPlayer = this;
         }
-
-        _networkMatch = GetComponent<NetworkMatch>();
+        else
+        {
+            MainMenu.Instance.SpawnUIPrefab();
+        }
     }
 
     public void HostGame()
     {
         string matchId = MatchMaker.GetRandomMatchId();
+        Debug.Log(matchId);
         CmdHostGame(matchId);
     }
 
     [Command]
     private void CmdHostGame(string matchId)
     {
-        MatchId = matchId;
+        _matchId = matchId;
 
         if (MatchMaker.Instance.TryHostGame(matchId, gameObject))
         {
-            Debug.Log("gameHosted cuccess");
             _networkMatch.matchId = matchId.ToGuid();
             TargetHostGame(true, matchId);
         }
         else
         {
-            Debug.Log("game not Hosted");
             TargetHostGame(false, matchId);
         }
     }
@@ -52,16 +58,15 @@ public class Client : NetworkBehaviour
         MainMenu.Instance.HostSuccess(success);
     }
 
-    public void JoinGame()
+    public void JoinGame(string inputID)
     {
-        string matchId = MatchMaker.GetRandomMatchId();
-        CmdJoinGame(matchId);
+        CmdJoinGame(inputID);
     }
 
     [Command]
     private void CmdJoinGame(string matchId)
     {
-        MatchId = matchId;
+        _matchId = matchId;
 
         if (MatchMaker.Instance.TryHostGame(matchId, gameObject))
         {
@@ -74,9 +79,33 @@ public class Client : NetworkBehaviour
         }
     }
 
+
     [TargetRpc]
     private void TargetJoinGame(bool success, string matchId)
     {
         MainMenu.Instance.JoinSuccess(success);
+    }
+
+    public void StartGame()
+    {
+        TargetBeginGame();
+    }
+
+    public void BeginGame()
+    {
+        CmdBeginGame();
+    }
+
+    [Command]
+    public void CmdBeginGame()
+    {
+        MatchMaker.Instance.BeginGame(_matchId);
+        TargetBeginGame();
+    }
+
+    [TargetRpc]
+    void TargetBeginGame()
+    {
+        SceneManager.LoadScene(_gameSceneName, LoadSceneMode.Additive);
     }
 }

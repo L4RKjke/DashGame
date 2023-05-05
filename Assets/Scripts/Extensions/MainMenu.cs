@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : NetworkBehaviour
 {
     [SerializeField] private Button _host;
     [SerializeField] private Button _join;
+    [SerializeField] private Button _startGame;
     [SerializeField] private TMP_InputField _JoinInput;
-    [SerializeField] private CustomNetworkManager _networkManager;
     [SerializeField] private Canvas _lobbyCanvas;
+    [SerializeField] private GameObject _playerContent;
+    [SerializeField] private GameObject _UiPrefab;
 
     public static MainMenu Instance;
 
@@ -31,7 +34,6 @@ public class MainMenu : MonoBehaviour
 
     private void OnHostButtonClick()
     {
-        /*_networkManager.StartHost();*/
         _JoinInput.interactable = false;
         _host.interactable = false;
         _join.interactable = false;
@@ -43,6 +45,7 @@ public class MainMenu : MonoBehaviour
         if (success)
         {
             _lobbyCanvas.enabled = true;
+            SpawnUIPrefab();
         }
         else
         {
@@ -57,8 +60,8 @@ public class MainMenu : MonoBehaviour
         _JoinInput.interactable = false;
         _host.interactable = false;
         _join.interactable = false;
-        Client.LocalPlayer.JoinGame();
-        /*_networkManager.StartClient();*/
+        Client.LocalPlayer.JoinGame(_JoinInput.text);
+        Debug.Log(_JoinInput.text);
     }
 
     public void JoinSuccess(bool success)
@@ -73,5 +76,15 @@ public class MainMenu : MonoBehaviour
             _host.interactable = true;
             _join.interactable = true;
         }
+    }
+
+    public void OnStartButtonClick()
+    {
+        Client.LocalPlayer.StartGame();
+    }
+
+    public void SpawnUIPrefab()
+    {
+        GameObject prefab = Instantiate(_UiPrefab, _playerContent.transform);
     }
 }

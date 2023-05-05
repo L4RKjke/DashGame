@@ -9,12 +9,12 @@ using System.Text;
 public class Match
 {
     public string MatchId;
-    public List<GameObject> _clients = new List<GameObject>();
+    public List<GameObject> Clients = new List<GameObject>();
 
     public Match (string matchId, GameObject player)
     {
         MatchId = matchId;
-        _clients.Add(player);
+        Clients.Add(player);
     }
 
     public Match() { }
@@ -22,6 +22,8 @@ public class Match
 
 public class MatchMaker : NetworkBehaviour
 {
+    [SerializeField] private TurnManager _turnManagerPrefab;
+
     public static MatchMaker Instance;
 
     public SyncList<Match> Matches = new SyncList<Match>();
@@ -54,7 +56,7 @@ public class MatchMaker : NetworkBehaviour
             {
                 if (Matches[i].MatchId == matchId)
                 {
-                    Matches[i]._clients.Add(player);
+                    Matches[i].Clients.Add(player);
                     break;
                 }
             }
@@ -64,6 +66,26 @@ public class MatchMaker : NetworkBehaviour
         else
         {
             return false;
+        }
+    }
+
+    public void BeginGame(string matchId)
+    {
+        TurnManager newTurnManager = Instantiate(_turnManagerPrefab);
+        newTurnManager.NetworkMatch.matchId = matchId.ToGuid();
+
+
+        for (int i = 0; i < Matches.Count; i++)
+        {
+            if (Matches[i].MatchId == matchId)
+            {
+                foreach (var player in Matches[i].Clients)
+                {
+                    Client player1 = player.GetComponent<Client>();
+                    newTurnManager.AddPlayer(player1);
+                    player1.StartGame();
+                }
+            }
         }
     }
 

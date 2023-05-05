@@ -2113,12 +2113,16 @@ PrefabInstance:
       objectReference: {fileID: 351097472}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: onlineScene
-      value: Assets/Scenes/Lobby.unity
+      value: Assets/Scenes/OnlineGameScene.unity
       objectReference: {fileID: 0}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: offlineScene
       value: Assets/Scenes/Offline.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 7659333086883880619, guid: d826f15fe68a4e94e90c2e28cb3ddf22, type: 3}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: autoCreatePlayer
       value: 1
