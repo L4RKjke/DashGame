@@ -9,9 +9,4 @@ public class MoveState : State
         if (Player != null)
             Player.PlayerMover.Move(_inputSystem.MoveDirection);
     }
-    /*    private void OnDisable()
-        {
-            if (Player != null)
-                Player.PlayerMover.Move(_inputSystem.MoveDirection);
-        }*/
 }

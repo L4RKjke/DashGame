@@ -27,8 +27,6 @@ public class ColorChanger : MonoBehaviour
 
     public void ChangeColor(HealthStatus status)
     {
-        /*if (!isLocalPlayer) return;
-*/
         if (status == HealthStatus.Damaged)
             SetColor(Color.red);
         else
@@ -37,21 +35,8 @@ public class ColorChanger : MonoBehaviour
 
     private void SetColor(Color color)
     {
-/*        if (isClient)*/
-            _material.color = color;
+        _material.color = color;
     }
 
-/*    [ClientRpc]
-    private void RpcSetColor(Color color)
-    {
-        SetColor(color);
-    }
 
-    [Command]
-    private void CmdSetColor(Color color)
-    {
-        SetColor(color);
-
-        RpcSetColor(color);
-    }*/
 }
