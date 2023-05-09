@@ -16,20 +16,14 @@ public class PlayerInfo : NetworkBehaviour
 
     public int Score => _score;
 
-    private void OnEnable()
-    {
-        _player.HealthChanged += AddPoint;
-    }
-
     private void OnDisable()
     {
-        _player.HealthChanged -= AddPoint;
         _score = 0;
     }
 
-    public void AddPoint(HealthStatus status)
+    public void AddPoint()
     {
-        if (status != HealthStatus.Damaged) return;
+        if (_player.State == HealthStatus.Damaged) return;
 
         _score++;
 

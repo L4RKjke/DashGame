@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
@@ -11,6 +9,8 @@ public class PlayerMover : NetworkBehaviour
 
     private readonly int _maxAngle = 360;
     public Action<float> SpeedChanged;
+
+    public float Speed => _speed;
 
     public void RotateView(Vector2 rotation, float sensetivity)
     {

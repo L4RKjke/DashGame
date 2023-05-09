@@ -10,10 +10,9 @@ public class DashAbility : Ability
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Player _player;
 
-    private bool _isWall = false;
     private bool _isDashing = false;
     private bool _canDash = true;
-    private float _dashSpeed = 40;
+    private float _dashSpeed = 50;
     private Coroutine _dashCoroutine;
     private Coroutine _diactivateRoutine;
 
@@ -23,7 +22,16 @@ public class DashAbility : Ability
     public Action<float> SpeedChanged;
     public Action<bool> DashStateChanged;
 
-    public bool IsDashing => _isDashing;
+    public bool IsDashing
+    {
+        get => _isDashing;
+
+        private set
+        {
+            _isDashing = value;
+            DashStateChanged?.Invoke(_isDashing);
+        }
+    }
 
     private void OnEnable()
     {
@@ -38,38 +46,19 @@ public class DashAbility : Ability
 
             if (IsDashing)
             {
-                player.ApplyDamage();
+                player.ApplyDamage(() => _player.PlayerInfo.AddPoint());
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void ActivateAbiltity(Action activatetCallback)
     {
-        if (other.TryGetComponent(out Wall wall))
-            _isWall = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out Wall wall))
-            _isWall = false;
-    }
-
-    public override void ActivateAbiltity()
-    {
-        if (_isWall)
-        {
-            DeactivateAbiltity();
-        }
-
         if (_isDashing == true) return;
 
         if (_canDash == false) return;
 
-        if (_diactivateRoutine != null)
-            StopCoroutine(_diactivateRoutine);
-
         _diactivateRoutine = StartCoroutine(DiactivateDashingRoutine());
+
         _isDashing = true;
 
         if (isLocalPlayer)
@@ -80,13 +69,15 @@ public class DashAbility : Ability
         var target = transform.position + (transform.forward * _dashDistance);
 
         if (isLocalPlayer)
+        {
             _dashCoroutine = StartCoroutine(DashRoutine(target));
+            activatetCallback();
+        }
     }
 
     private IEnumerator DashRoutine(Vector3 target)
     {
         _rigidbody.velocity = transform.forward * _dashSpeed;
-        DashStateChanged.Invoke(_isDashing);
         Status = AbilityStatus.InProgress;
         float currentDistance = 0;
 
@@ -104,7 +95,6 @@ public class DashAbility : Ability
                     CmdChangeDashState(false);
 
                 Status = AbilityStatus.Ended;
-                DashStateChanged.Invoke(_isDashing);
                 yield break;
             }
 
@@ -125,7 +115,6 @@ public class DashAbility : Ability
             CmdChangeDashState(false);
 
         Status = AbilityStatus.Ended;
-        DashStateChanged.Invoke(_isDashing);
     }
 
     [Command]

@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class AttackState : State
 {
-    public Action<bool> AttackEnded;
+    public Action<bool> AttackStateChanged;
 
     private void OnEnable()
     {
-        if (Player != null)
-            Player.Ability.ActivateAbiltity();
+        if (Player == null) return;
+
+        Player?.Ability.ActivateAbiltity(() => AttackStateChanged?.Invoke(true));
     }
 
     private void OnDisable()
@@ -17,6 +16,6 @@ public class AttackState : State
         if (Player != null)
             Player.Ability.DeactivateAbiltity();
 
-        AttackEnded?.Invoke(false);
+        AttackStateChanged?.Invoke(false);
     }
 }

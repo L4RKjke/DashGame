@@ -56,10 +56,11 @@ public class InputSystem : NetworkBehaviour
         float horizontalInput = Input.GetAxis(_horizontal);
         float verticalInput = Input.GetAxis(_vertical);
         var direction = new Vector3(horizontalInput, 0f, verticalInput);
+
         MoveDirection = direction;
     }
 
-    public void OnMouseMove()
+    private void OnMouseMove()
     {
         var horizontalKeyInput = Input.GetAxis(_mouseHorizontal);
         var verticalKeyInput = Input.GetAxis(_mouseVertical);
