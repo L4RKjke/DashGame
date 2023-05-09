@@ -22,7 +22,6 @@ public class Player : NetworkBehaviour
 
     public PlayerInfo PlayerInfo => _playerInfo;
 
-
     private HealthStatus _state = HealthStatus.Cured;
 
     public HealthStatus State 
@@ -41,26 +40,25 @@ public class Player : NetworkBehaviour
         State = HealthStatus.Cured;
     }
 
-    public void ApplyDamage(Action damagedCallback)
+    public void ApplyDamage(Action damagedCallback = null)
     {
-        if (isLocalPlayer)
-        {
-            damagedCallback();
-            StartCoroutine(ApplyDamageRoutine());
-        }
+        StartCoroutine(ApplyDamageRoutine());
+        damagedCallback?.Invoke();
     }
 
     private IEnumerator ApplyDamageRoutine()
     {
         State = HealthStatus.Damaged;
 
-        CmdUpdateState(State);
+        if (isLocalPlayer)
+            CmdUpdateState(HealthStatus.Damaged);
 
         yield return new WaitForSeconds(_timeOfInvulnerability);
 
         State = HealthStatus.Cured;
 
-        CmdUpdateState(State);
+        if (isLocalPlayer)
+            CmdUpdateState(HealthStatus.Cured);
     }
 
     [Command]

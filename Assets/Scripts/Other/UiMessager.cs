@@ -2,16 +2,16 @@ using UnityEngine;
 using TMPro;
 using Mirror;
 
-public class FinalMessager : NetworkBehaviour
+public class UiMessager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
-    [SerializeField] private TextMeshProUGUI _server;
+    [SerializeField] private TextMeshProUGUI _playerName;
 
-    private void Start()
+    private void Update()
     {
         if (NetworkServer.active && NetworkClient.active)
         {
-            _server.text = "Хост";
+            _playerName.text = "Хост";
         }
     }
 

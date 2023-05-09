@@ -2211,7 +2211,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _textMeshProUGUI: {fileID: 1220871171}
-  _server: {fileID: 840042354}
+  _playerName: {fileID: 840042354}
+  _gameRestarter: {fileID: 2049725484}
 --- !u!1 &2069050407
 GameObject:
   m_ObjectHideFlags: 0

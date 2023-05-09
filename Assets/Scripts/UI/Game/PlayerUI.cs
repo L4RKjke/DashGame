@@ -12,12 +12,7 @@ public class PlayerUI : NetworkBehaviour
     private PlayerInfo _playerInfo;
     private RectTransform _rectTransform;
 
-    public RectTransform RectTransform => _rectTransform;
-
-    public void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-    }
+    public RectTransform RectTransform => _rectTransform ??= GetComponent<RectTransform>();
 
     private void OnDisable()
     {

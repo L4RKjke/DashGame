@@ -5,13 +5,15 @@ using UnityEngine;
 public class GameRestarter : NetworkBehaviour
 {
     [SerializeField] private UnitPool _unitPool;
-    [SerializeField] private FinalMessager _finalMessager;
+    [SerializeField] private UiMessager _finalMessager;
 
     private readonly string _loadMethodName = nameof(LoadCurrentScene);
     private readonly int _loadTimeout = 5;
     private readonly int _winScore = 3;
 
     private string _name;
+
+    public string Name => _name;
 
     private void OnEnable()
     {

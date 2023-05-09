@@ -23,8 +23,6 @@ public class PlayerInfo : NetworkBehaviour
 
     public void AddPoint()
     {
-        if (_player.State == HealthStatus.Damaged) return;
-
         _score++;
 
         if (isLocalPlayer)

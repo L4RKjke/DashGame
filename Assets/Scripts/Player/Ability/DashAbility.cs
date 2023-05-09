@@ -53,13 +53,13 @@ public class DashAbility : Ability
 
     public override void ActivateAbiltity(Action activatetCallback)
     {
-        if (_isDashing == true) return;
+        if (IsDashing == true) return;
 
         if (_canDash == false) return;
 
         _diactivateRoutine = StartCoroutine(DiactivateDashingRoutine());
 
-        _isDashing = true;
+        IsDashing = true;
 
         if (isLocalPlayer)
         {
@@ -89,7 +89,7 @@ public class DashAbility : Ability
             {
                 _rigidbody.velocity = Vector3.zero;
 
-                _isDashing = false;
+                IsDashing = false;
 
                 if (isLocalPlayer)
                     CmdChangeDashState(false);
@@ -109,7 +109,7 @@ public class DashAbility : Ability
 
         _rigidbody.velocity = Vector3.zero;
 
-        _isDashing = false;
+        IsDashing = false;
 
         if (isLocalPlayer)
             CmdChangeDashState(false);
@@ -120,14 +120,14 @@ public class DashAbility : Ability
     [Command]
     private void CmdChangeDashState(bool state)
     {
-        _isDashing = state;
+        IsDashing = state;
         RpcChagneDashState(state);
     }
 
     [ClientRpc]
     private void RpcChagneDashState(bool state)
     {
-        _isDashing = state;
+        IsDashing = state;
     }
 
     private IEnumerator DiactivateDashingRoutine()
