@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2925595420435636356}
   - component: {fileID: 710932043716136307}
   - component: {fileID: 3484835799196754239}
+  - component: {fileID: 8347407685199846988}
   - component: {fileID: 8801243276451723057}
   - component: {fileID: 8465538740963636347}
   - component: {fileID: 8068968736084334993}
@@ -175,6 +176,25 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: -1.57, z: 0}
+--- !u!114 &8347407685199846988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659333086883880619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1bc7cf120aed8e49aed3d0e3a764a39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraObj: {fileID: 7729243830025275303}
+  target: {fileID: 7659333086883880631}
+  distance: 2.7
+  minDistance: 1
+  maxDistance: 6
+  minYAngle: 0
+  maxYAngle: 80
 --- !u!114 &8801243276451723057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +279,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _mover: {fileID: 8465538740963636347}
-  _camera: {fileID: 8801243276451723057}
+  _camera: {fileID: 8347407685199846988}
+  _mouseSensetivity: 6
 --- !u!114 &2193041868338295813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,10 +333,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _dashDistance: 15
-  _timeOfInvulnerability: 3
   _rigidbody: {fileID: 7659333086883880624}
   _player: {fileID: 8465538740963636347}
+  _dashDistance: 18
+  _timeOfInvulnerability: 3
 --- !u!114 &6701810653185048247
 MonoBehaviour:
   m_ObjectHideFlags: 0

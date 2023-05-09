@@ -5,6 +5,7 @@ using System;
 public class PlayerMover : NetworkBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
+    [Header("Dash config")]
     [SerializeField] private float _speed;
 
     private readonly int _maxAngle = 360;
@@ -14,7 +15,7 @@ public class PlayerMover : NetworkBehaviour
 
     public void RotateView(Vector2 rotation, float sensetivity)
     {
-        var X = rotation.x * sensetivity * Time.deltaTime;
+        var X = rotation.x * sensetivity/* * Time.deltaTime*/;
         var eulerY = (transform.rotation.eulerAngles.y + X) % _maxAngle;
 
         transform.localRotation = Quaternion.Euler(transform.localRotation.x, eulerY, 0);

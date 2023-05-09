@@ -5,9 +5,9 @@ using System;
 public class InputSystem : NetworkBehaviour
 {
     [SerializeField] private Player _mover;
-    [SerializeField] private CameraExtention _camera;
-
-    private int _mouseSensetivity = 220;
+    [SerializeField] private CameraMover _camera;
+    [Header("Input config")]
+    [SerializeField] private int _mouseSensetivity;
 
     private const string _horizontal = "Horizontal";
     private const string _vertical = "Vertical";
@@ -67,6 +67,6 @@ public class InputSystem : NetworkBehaviour
         var rotation = new Vector2(horizontalKeyInput, verticalKeyInput);
 
         _mover.PlayerMover.RotateView(rotation, _mouseSensetivity);
-        _camera.RotateCamera(rotation, _mouseSensetivity);
+        _camera.MoveCamera(rotation, _mouseSensetivity);
     }
 }

@@ -5,14 +5,15 @@ using Mirror;
 
 public class DashAbility : Ability
 {
-    [SerializeField] private float _dashDistance;
-    [SerializeField] private float _timeOfInvulnerability;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Player _player;
+    [Header("Dash config")]
+    [SerializeField] private float _dashDistance;
+    [SerializeField] private float _timeOfInvulnerability;
 
     private bool _isDashing = false;
     private bool _canDash = true;
-    private float _dashSpeed = 50;
+    private float _dashSpeed = 80;
     private Coroutine _dashCoroutine;
     private Coroutine _diactivateRoutine;
 
