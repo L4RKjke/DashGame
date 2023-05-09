@@ -7,7 +7,7 @@ public class MoveState : State
 
     public Action SpeedChanged;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Player?.PlayerMover.Move(_inputSystem.MoveDirection);
 
