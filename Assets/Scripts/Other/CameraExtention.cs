@@ -27,7 +27,11 @@ public class CameraExtention : NetworkBehaviour
         var maxAngel = 360;
         var Y = rotation.y * (sensetivity) * Time.deltaTime;
         var eulerX = (transform.rotation.eulerAngles.x + Y) % maxAngel;
+        eulerX = Mathf.Clamp(eulerX, -80, 80);
+        var cameraPositionY = _cameraObj.localPosition.y + (eulerX * 0.045f);
+        var cameraPositionZ = _cameraObj.localPosition.z + (eulerX * 0.045f);
 
+        _cameraObj.localPosition = new Vector3(_cameraObj.localPosition.x, cameraPositionY, cameraPositionZ);
         _cameraObj.Rotate(new Vector3(eulerX, 0, 0));
     }
 }
