@@ -9,7 +9,6 @@ public class DashAbility : Ability
     [SerializeField] private float _timeOfInvulnerability;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Player _player;
-    [SerializeField] private PlayerInfo _playerInfo;
 
     private bool _isWall = false;
     private bool _isDashing = false;
@@ -40,7 +39,6 @@ public class DashAbility : Ability
             if (IsDashing)
             {
                 player.ApplyDamage();
-                _playerInfo.AddPoint();
             }
         }
     }

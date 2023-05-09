@@ -10,9 +10,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private NetworkIdentity _identity;
     [SerializeField] private PlayerMover _playerMover;
     [SerializeField] private Ability _ability;
+    [SerializeField] private PlayerInfo _playerInfo;
 
     public Action<HealthStatus> HealthChanged;
-    public Action<bool> DashStateChanged;
 
     public Ability Ability => _ability;
 
@@ -23,11 +23,20 @@ public class Player : NetworkBehaviour
 
     private HealthStatus _state = HealthStatus.Cured;
 
-    public HealthStatus State => _state;
+    public HealthStatus State 
+    { 
+        get => _state;
+
+        private set 
+        {
+            _state = value;
+            HealthChanged?.Invoke(_state);
+        } 
+    }
 
     private void Start()
     {
-        _state = HealthStatus.Cured;
+        State = HealthStatus.Cured;
     }
 
     public void ApplyDamage()
@@ -44,7 +53,7 @@ public class Player : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-            _state = HealthStatus.Damaged;
+            State = HealthStatus.Damaged;
             CmdChangeState(HealthStatus.Damaged);
         }
 
@@ -54,7 +63,7 @@ public class Player : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-            _state = HealthStatus.Cured;
+            State = HealthStatus.Cured;
             CmdChangeState(HealthStatus.Cured);
         }
 
@@ -63,15 +72,18 @@ public class Player : NetworkBehaviour
     [Command]
     private void CmdChangeState(HealthStatus state)
     {
-        _state = state;
-        HealthChanged?.Invoke(state);
+        State = state;
         RpcChangeState(state);
     }
 
     [ClientRpc]
     private void RpcChangeState(HealthStatus status)
     {
-        _state = status;
-        HealthChanged?.Invoke(status);
+        if (status == HealthStatus.Damaged)
+        {
+            _playerInfo.AddPoint();
+        }
+
+        State = status;
     }
 }

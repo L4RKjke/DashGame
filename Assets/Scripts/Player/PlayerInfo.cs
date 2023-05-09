@@ -74,7 +74,6 @@ public class PlayerInfo : NetworkBehaviour
     [Command]
     private void CmdUpdateName(string name)
     {
-        Debug.Log("cmdUpdateName");
         _name = name;
         RpcUpdateName(name);
     }
@@ -82,7 +81,6 @@ public class PlayerInfo : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateName(string name)
     {
-        Debug.Log("RpcUpdateName");
         _name = name;
     }
 }

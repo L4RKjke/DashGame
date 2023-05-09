@@ -207,11 +207,12 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _dashDistance: 15
+  _dashDistance: 20
   _timeOfInvulnerability: 3
   _identity: {fileID: 7617942785700112244}
   _playerMover: {fileID: 8227610291042921384}
   _ability: {fileID: 6195219559166997011}
+  _playerInfo: {fileID: 6549615040306607094}
 --- !u!114 &8068968736084334993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +295,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _rigidbody: {fileID: 7659333086883880624}
-  _speed: 8
+  _speed: 10
 --- !u!114 &6195219559166997011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +315,6 @@ MonoBehaviour:
   _timeOfInvulnerability: 3
   _rigidbody: {fileID: 7659333086883880624}
   _player: {fileID: 8465538740963636347}
-  _playerInfo: {fileID: 6549615040306607094}
 --- !u!114 &6701810653185048247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +387,6 @@ MonoBehaviour:
   _transitions:
   - {fileID: 970192180741484497}
   - {fileID: 5498230204412493010}
-  - {fileID: 1464691597723224547}
 --- !u!114 &1464691597723224547
 MonoBehaviour:
   m_ObjectHideFlags: 0

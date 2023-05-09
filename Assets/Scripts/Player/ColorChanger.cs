@@ -35,8 +35,7 @@ public class ColorChanger : MonoBehaviour
 
     private void SetColor(Color color)
     {
-        _material.color = color;
+        if (_material != null)
+            _material.color = color;
     }
-
-
 }
