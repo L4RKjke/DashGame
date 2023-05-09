@@ -79,11 +79,6 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcChangeState(HealthStatus status)
     {
-        if (status == HealthStatus.Damaged)
-        {
-            _playerInfo.AddPoint();
-        }
-
         State = status;
     }
 }
