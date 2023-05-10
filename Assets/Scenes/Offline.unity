@@ -2107,9 +2107,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 351097472}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
+      propertyPath: _skillDash
+      value: 
+      objectReference: {fileID: 4859529390727048818, guid: 332d57685b2cd3e4bb6d46cdd1529422, type: 3}
+    - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: onlineScene
       value: Assets/Scenes/OnlineGameScene.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
+      propertyPath: _skillSprite
+      value: 
+      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: offlineScene
       value: Assets/Scenes/Offline.unity
@@ -2122,6 +2130,10 @@ PrefabInstance:
       propertyPath: autoCreatePlayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
+      propertyPath: _playerCanvasImage
+      value: 
+      objectReference: {fileID: 8952568243781733363, guid: 2d4ff03f687c4d44195a5ef004551adc, type: 3}
     - target: {fileID: 4586515432336768134, guid: bd5454be8f512154492f82af462770bc, type: 3}
       propertyPath: _spawnPoints.Array.size
       value: 4

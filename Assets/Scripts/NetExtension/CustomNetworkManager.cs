@@ -18,6 +18,22 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
+        InitPlayer(conn);
+    }
+
+    private Transform GetRandomSpawnPoint(int id)
+    {
+        return _spawnPoints[id].transform;
+    }
+
+    private void ShufleList(List<NetworkStartPosition> list)
+    {
+        System.Random random = new System.Random();
+        list.Sort((x, y) => random.Next(-1, 2));
+    }
+
+    private void InitPlayer(NetworkConnectionToClient conn)
+    {
         GameObject player = Instantiate(playerPrefab, GetRandomSpawnPoint(_spawned).position, Quaternion.identity);
 
         _spawned++;
@@ -28,19 +44,5 @@ public class CustomNetworkManager : NetworkManager
         }
 
         NetworkServer.AddPlayerForConnection(conn, player);
-    }
-
-    private Transform GetRandomSpawnPoint(int id)
-    {
-/*        if (id > _spawnPoints.Count)
-            id = _spawnPoints.Count - 1;*/
-
-        return _spawnPoints[id].transform;
-    }
-
-    private void ShufleList(List<NetworkStartPosition> list)
-    {
-        System.Random random = new System.Random();
-        list.Sort((x, y) => random.Next(-1, 2));
     }
 }

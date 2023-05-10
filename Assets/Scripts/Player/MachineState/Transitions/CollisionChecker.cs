@@ -8,5 +8,10 @@ public class CollisionChecker : Transition
         {
             NeedTransit = true;
         }
+
+        if (collision.transform.TryGetComponent<Player>(out _))
+        {
+            NeedTransit = true;
+        }
     }
 }

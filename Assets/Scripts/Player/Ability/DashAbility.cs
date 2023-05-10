@@ -22,7 +22,6 @@ public class DashAbility : Ability
     public Action<HealthStatus> HealthChanged;
     public Action<float> SpeedChanged;
     public Action<bool> DashStateChanged;
-    public Action DashActivated;
 
     public float DashTime => _dashReloadTime;
 
@@ -137,7 +136,6 @@ public class DashAbility : Ability
     private IEnumerator DiactivateDashingRoutine()
     {
         _canDash = false;
-        DashActivated?.Invoke();
 
         yield return new WaitForSeconds(_dashReloadTime);
         

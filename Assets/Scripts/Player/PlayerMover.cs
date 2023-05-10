@@ -13,6 +13,11 @@ public class PlayerMover : NetworkBehaviour
 
     public float Speed => _speed;
 
+    public void StopPlayer()
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
+
     public void RotateView(Vector2 rotation, float sensetivity)
     {
         var X = rotation.x * sensetivity/* * Time.deltaTime*/;

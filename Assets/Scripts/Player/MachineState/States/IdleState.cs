@@ -13,4 +13,9 @@ public class IdleState : State
 
         IdleStateActivated?.Invoke();
     }
+
+    private void Update()
+    {
+        Player.PlayerMover.StopPlayer();
+    }
 }
