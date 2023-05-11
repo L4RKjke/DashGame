@@ -26,13 +26,13 @@ public class PlayerUI : NetworkBehaviour
         _playerInfo.ScoreUpdated += SetScore;
     }
 
-    public void SetScore(int score)
+    public void SetScore(PlayerInfo info)
     {
-        _playerScore.text = score.ToString();
+        _playerScore.text = info.Score.ToString();
 
         if (isLocalPlayer)
         {
-            CmdSetScore(score);
+            CmdSetScore(info.Score);
         }
     }
 

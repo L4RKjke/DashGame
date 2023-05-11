@@ -1,7 +1,7 @@
 using UnityEngine;
 using Mirror;
 
-public class ColorChanger : MonoBehaviour
+public class ColorChanger : NetworkBehaviour
 {
     [SerializeField] private SkinnedMeshRenderer _renderer;
     [SerializeField] private Player _player;
@@ -17,23 +17,38 @@ public class ColorChanger : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.HealthChanged += ChangeColor;
+        _player.HealthDamaged += CmdSetRedColor;
+        _player.HealthCured += CmdChangeToDefault;
     }
 
     private void OnDisable()
     {
-        _player.HealthChanged -= ChangeColor;
+        _player.HealthDamaged -= CmdSetRedColor;
+        _player.HealthCured += CmdChangeToDefault;
     }
 
-    public void ChangeColor(HealthStatus status)
+    [Command(requiresAuthority = false)]
+    private void CmdSetRedColor()
     {
-        if (status == HealthStatus.Damaged)
-            SetColor(Color.red);
-        else
-            SetColor(_originalColor);
+        SetColor(Color.red);
     }
+
+    [Command(requiresAuthority = false)]
+    private void CmdChangeToDefault()
+    {
+        SetColor(_originalColor);
+    } 
 
     private void SetColor(Color color)
+    {
+        if (_material != null)
+            _material.color = color;
+
+        RpcChangeColor(color);
+    }
+
+    [ClientRpc]
+    private void RpcChangeColor(Color color)
     {
         if (_material != null)
             _material.color = color;

@@ -45,11 +45,11 @@ public class DashAbility : Ability
     {
         if (collision.transform.TryGetComponent(out Player player))
         {
-            if (player.State == HealthStatus.Damaged) return;
-
             if (IsDashing)
             {
-                player.ApplyDamage(() => _player.PlayerInfo.AddPoint());
+                if (!isLocalPlayer) return;
+
+                player.ApplyDamage(() => _player.PlayerInfo.CmdAddPoint());
             }
         }
     }

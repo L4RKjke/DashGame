@@ -12,7 +12,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private Ability _ability;
     [SerializeField] private PlayerInfo _playerInfo;
 
-    public Action<HealthStatus> HealthChanged;
+    public Action HealthDamaged;
+    public Action HealthCured;
 
     public Ability Ability => _ability;
 
@@ -31,7 +32,11 @@ public class Player : NetworkBehaviour
         private set 
         {
             _state = value;
-            HealthChanged?.Invoke(_state);
+
+            if (value == HealthStatus.Damaged)
+                HealthDamaged?.Invoke();
+            else
+                HealthCured?.Invoke();
         } 
     }
 
@@ -40,17 +45,20 @@ public class Player : NetworkBehaviour
         State = HealthStatus.Cured;
     }
 
-    public void ApplyDamage(Action damagedCallback = null)
+
+    public void ApplyDamage(Action callback)
     {
+        if (State == HealthStatus.Damaged) return;
+
+        callback();
         StartCoroutine(ApplyDamageRoutine());
-        damagedCallback?.Invoke();
     }
 
     private IEnumerator ApplyDamageRoutine()
     {
         State = HealthStatus.Damaged;
-
         if (isLocalPlayer)
+
             CmdUpdateState(HealthStatus.Damaged);
 
         yield return new WaitForSeconds(_timeOfInvulnerability);
@@ -61,9 +69,10 @@ public class Player : NetworkBehaviour
             CmdUpdateState(HealthStatus.Cured);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdUpdateState(HealthStatus state)
     {
+        Debug.Log("yes12");
         State = state;
         RpcUpdateState(state);
     }

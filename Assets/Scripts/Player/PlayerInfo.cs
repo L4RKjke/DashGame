@@ -10,7 +10,7 @@ public class PlayerInfo : NetworkBehaviour
     private string _name;
     private int _score;
 
-    public Action<int> ScoreUpdated;
+    public Action<PlayerInfo> ScoreUpdated;
 
     public string Name => _name;
 
@@ -21,15 +21,11 @@ public class PlayerInfo : NetworkBehaviour
         _score = 0;
     }
 
-    public void AddPoint()
+    [Command]
+    public void CmdAddPoint()
     {
         _score++;
-
-        if (isLocalPlayer)
-        {
-            CmdUpdateScore(_score);
-            ScoreUpdated?.Invoke(_score);
-        }
+        RpcUpdateScore(_score);
     }
 
     public void SetName(string name)
@@ -42,45 +38,10 @@ public class PlayerInfo : NetworkBehaviour
         _name = newName;
     }
 
-    [Command]
-    private void CmdUpdateScore(int newScore)
-    {
-        _score = newScore;
-        ScoreUpdated?.Invoke(_score);
-        RpcUpdateScore(_score);
-    }
-
     [ClientRpc]
     private void RpcUpdateScore(int newScore)
     {
         _score = newScore;
-        ScoreUpdated?.Invoke(_score);
-    }
-
-    private string GenerateName()
-    {
-        System.Random random = new System.Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        char[] name = new char[10];
-
-        for (int i = 0; i < 10; i++)
-        {
-            name[i] = chars[random.Next(chars.Length)];
-        }
-
-        return new String(name);
-    }
-
-    [Command]
-    private void CmdUpdateName(string name)
-    {
-        _name = name;
-        RpcUpdateName(name);
-    }
-
-    [ClientRpc]
-    private void RpcUpdateName(string name)
-    {
-        _name = name;
+        ScoreUpdated?.Invoke(this);
     }
 }

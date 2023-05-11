@@ -43,12 +43,12 @@ public class GameRestarter : NetworkBehaviour
         _name = info.Name;
     }
 
-    private void WaitForWinner(int score)
+    private void WaitForWinner(PlayerInfo info)
     {
-        if (score == _winScore)
+        if (info.Score == _winScore)
         {
             RestartGame();
-            _finalMessager.ShowMessage(_name);
+            _finalMessager.ShowMessage(info.Name);
         }
     }
 }
